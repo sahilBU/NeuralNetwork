@@ -76,7 +76,7 @@ Below are the tasks performed:
 
    
 
-python
+```python
 def sigmoid(t):
     return 1.0/(1.0+np.exp(-1.0*t))
 
@@ -107,7 +107,7 @@ def k_fold(X,y,k,nn):
     #plt.plot(train_error)
     plt.plot(train_error)
     return (np.sum(test_error)/(k+1))
-
+```
 
 
 
