@@ -18,6 +18,8 @@ Here I will present my report for the programming assignment 1. I will include a
 
 In this assignment, you need to build a neural network by yourself and implement the backpropagation algorithm to train it. 
 
+Please find the notebook here - https://github.com/sahilBU/cs640/blob/master/Logistic_Regression.ipynb
+
 
 
 ## Implementation
