@@ -251,7 +251,55 @@ class NN(object):
 
 
 
-## Linear Data
+## Linear 
+
+The plots that the code shows below show that this is a linearly separable case. A lot of epochs are not needed to come up with suitable weights and having higher epochs may lead to the problem of overfitting
+
+```python
+def linear():
+    X = np.genfromtxt('DATA/data_linearX.csv', delimiter=',')
+    y = np.genfromtxt('DATA/data_lineary.csv', delimiter=',').astype(np.int64)
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.bwr)
+    plt.show()
+
+    X, X_test, y, y_test = train_test_split(X, y, test_size=0.2)
+    input_dim = int(X.shape[1])
+    output_dim = int(y.max() + 1)
+    nodes = 10
+
+    nn = NN(input_dim, nodes, output_dim, alpha=0.05, num_epochs=500)
+    train_err = nn.fit(X, y)
+
+    y_pred = nn.predict(X_test)
+
+    err = error_rate(y_pred, y_test)
+    print("Error in test set is ", err * 100, "%")
+
+    plt.plot(train_err)
+    plt.title("Cross Entropy with respect to Epochs")
+    plt.xlabel("Number of Epochs (factor of 10)")
+    plt.ylabel("Cross Entropy")
+    plt.show()
+
+    # Even though the cross entropy is not minimized,
+    # our system is able to distinguish the red points from the blue points easily
+    # Plotting decision boundary
+    plot_decision_boundary(nn, X_test, y_test)
+
+    # Confusion matrix
+    print("Confusion Matrix \n")
+    print(confusion_matrix(y_pred, y_test))
+    print(classification_report(y_pred, y_test))
+
+    X = np.genfromtxt('DATA/data_linearX.csv', delimiter=',')
+    y = np.genfromtxt('DATA/data_lineary.csv', delimiter=',').astype(np.int64)
+    test_error = k_fold(X, y, 5, nn)
+    print("Average test error is :", test_error)
+linear()
+```
+ 
+
+
 
 
 
@@ -264,6 +312,10 @@ class NN(object):
 
 
 ## Regularlization 
+
+
+
+
 
 Any type of constrained optimization is regularization procedure. We could add a penality in the performance function which would indicate the complexity of a function.
 
