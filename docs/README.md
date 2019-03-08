@@ -653,4 +653,5 @@ The accuracy of this model is 94% and this accuracy rate common among neural net
 ## Credits and Bibliography
 
 http://neuralnetworksanddeeplearning.com/chap1.html
+
 https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/
