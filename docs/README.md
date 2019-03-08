@@ -146,6 +146,110 @@ fit: Computer the train error after completeing k epoch
 predict: This is used after the neural network has been trained.
 
 
+``` python
+
+class NN(object):
+
+    def __init__(self, input_dimension, output_dimension, nodes, alpha=0.1, num_epochs=1000):
+        # weights
+        self.input_weight = np.random.randn(input_dimension, nodes) / np.sqrt(input_dimension)
+        self.hidden_weight = np.random.randn(nodes, output_dimension) / np.sqrt(nodes)
+
+        # bias
+        self.input_bias = np.zeros((1, nodes))
+        self.output_bias = np.zeros((1, output_dimension))
+        self.alpha = alpha
+        self.epochs = num_epochs
+
+    def hyperparameters(self, alpha, epochs):
+        self.alpha = alpha
+        self.epochs = epochs
+
+    def forward_propagation(self, X):
+        # dot product of X (input) and first set
+        self.hidden = reLU(np.dot(X, self.input_weight) + self.input_bias)
+        # dot product of hidden layer and second set
+        self.output = softmax(np.dot(self.hidden, self.hidden_weight) + self.output_bias)
+        return self.output
+
+    def backward_propagation(self, X, y):
+        d = X.shape[0]
+        one_hot_y = np.zeros_like(self.output)
+        for i in range(y.shape[0]):
+            one_hot_y[i, y[i]] = 1
+
+        self.o_error = self.output - one_hot_y
+        self.o_delta = self.o_error
+
+        # error: how much hidden layer weights contributed to output error
+        self.hid_error = self.o_delta.dot(self.hidden_weight.T)
+
+        # applying derivative of reLu to hidden error
+        self.hid_delta = self.hid_error * reLU_derivative(self.hidden)
+
+        w2 = self.hidden.T.dot( self.o_delta) / d
+        b2 = np.sum(self.o_delta, axis=0, keepdims=True) / d
+        w1 = X.T.dot( self.hid_delta) / d
+        b1 = np.sum(self.hid_delta, axis=0, keepdims=True) / d
+
+        # Return updated gradients
+        values = { "w1": w1,
+                    "b1": b1,
+                   "w2": w2,
+                "b2": b2}
+        return values
+
+    # Updates the weights after calculating gradient in the self propagation step
+    def update_weight(self, grads):
+        self.input_bias -= self.alpha * grads["b1"]
+        self.output_bias -= self.alpha * grads["b2"]
+        self.input_weight -= self.alpha * grads["w1"]
+        self.hidden_weight -= self.alpha * grads["w2"]
+        
+   
+
+  
+    def compute_cost(self, oz, y):
+        m = y.shape[0]
+        return np.sum(1 - (oz == y)) / m
+
+    # Fits the neural network using the training dataset
+    # Returns the training error for every 10th epoch
+    def fit(self, X_train, y_train):
+        train_error = [0.5]
+        for i in range(self.epochs):
+            output = self.forward_propagation(X_train)
+            grads = self.backward_propagation(X=X_train, y=y_train)
+            self.update_weight(grads)
+            if (i % 10 == 0):
+                # hot_y = softmax_to_y(output)
+                train_error += [self.compute_cost(output, y_train)]
+        return train_error
+
+    # Fits the neural network using the training dataset,
+    # calculates train as well as test error rate alongside
+    def fit_test_train(self, X_train, y_train, X_test, y_test):
+        train_error = []
+        test_error = []
+        for i in range(self.epochs):
+            output_train = self.forward_propagation(X_train)
+            grads = self.backward_propagation(X=X_train, y=y_train)
+            self.update_weight(grads)
+            if (i % 10 == 0):
+                train_error += [self.compute_cost(output_train, y_train)]
+                output_test = self.forward_propagation(X_test)
+                test_error += [self.compute_cost(output_test, y_test)]
+        error = [None] * 2
+        error[0] = train_error
+        error[1] = test_error
+        return error
+
+    def predict(self, X_test):
+        output = self.forward_propagation(X_test)
+        return softmax_to_y(output)
+```
+
+
 
 ## Linear Data
 
