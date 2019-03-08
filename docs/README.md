@@ -115,6 +115,36 @@ def k_fold(X,y,k,nn):
 
 #### Neural Network Implementation
 
+Below are the functions used for implementation:
+
+Forward Propagation: Input is the feature vector. Below are the mathematical equations for it
+hidden=X.W1+B1
+ 
+output=hidden.W2+B2
+ 
+Back Propagation: Back propagation here is done with the help of gradient descent. Input here is the activation cache from forward propagation. X is the feature vector and y is the output vector. We backpropagate the derivatives backward. Also here we use the cross entropy loss and softmax function in the output layer. Below are the equations -
+outputError=output−oneHotY
+ 
+outputDelta=outputError
+ 
+hiddenError=outputDelta∗(W2.T)
+ 
+hiddenDelta=hiddenError∗∂hidden∂sigmoid
+ 
+Updated Values:
+
+W2=W2−α[(hidden.T).(outputDelta)/d]
+ 
+W1=W1−α[(X.T).hiddenDelta)/d]
+ 
+B2=B2−α∗[∑(outputDelta)/d]
+ 
+B1=B1−α∗[∑(hiddenDelta)/d]
+ 
+Compute_Cost: Computes cost of the data set. This is the cost function which we hope to minimize after k epochs
+fit: Computer the train error after completeing k epoch
+predict: This is used after the neural network has been trained.
+
 
 
 ## Linear Data
