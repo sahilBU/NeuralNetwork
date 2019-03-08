@@ -297,6 +297,29 @@ def linear():
     print("Average test error is :", test_error)
 linear()
 ```
+
+![L1](https://user-images.githubusercontent.com/43014978/54051654-548bac00-41b0-11e9-867d-bcfd067dfc4e.png)
+
+![L2](https://user-images.githubusercontent.com/43014978/54051733-8270f080-41b0-11e9-8ed3-cc17312e9dc7.png)
+
+![L3](https://user-images.githubusercontent.com/43014978/54051734-843ab400-41b0-11e9-91e0-d016089968fc.png)
+
+
+Confusion Matrix 
+
+[[204   0]
+ [  1 195]]
+              precision    recall  f1-score   support
+
+           0       1.00      1.00      1.00       204
+           1       1.00      0.99      1.00       196
+
+   micro avg       1.00      1.00      1.00       400
+   macro avg       1.00      1.00      1.00       400
+weighted avg       1.00      1.00      1.00       400
+
+Average test error is : 0.0004166666666666667
+
  
 
 
