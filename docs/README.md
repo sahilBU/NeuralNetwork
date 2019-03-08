@@ -328,7 +328,92 @@ Average test error is : 0.0004166666666666667
 
 ## NonLinear Data
 
+```python
 
+def non_linear():
+    X = np.genfromtxt('DATA/data_nonlinearX.csv', delimiter=',')
+    y = np.genfromtxt('DATA/data_nonlineary.csv', delimiter=',').astype(np.int64)
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.bwr)
+    plt.show()
+    X, X_test, y, y_test = train_test_split(X, y, test_size=0.2)
+    input_dim = int(X.shape[1])
+    output_dim = int(y.max() + 1)
+    nodes = 30
+
+    nn = NN(input_dim, nodes, output_dim, alpha=0.5, num_epochs=2500)
+    train_err = nn.fit(X, y)
+
+    y_pred = nn.predict(X_test)
+
+    err = error_rate(y_pred, y_test)
+    print("Error in test set is ", err * 100, "%")
+
+    plt.plot(train_err)
+    plt.title("Cross Entropy with respect to Epochs")
+    plt.xlabel("Number of Epochs (factor of 10)")
+    plt.ylabel("Cross Entropy")
+    plt.show()
+
+    # Even though the cross entropy is not minimized,
+    # our system is able to distinguish the red points from the blue points easily
+    # Plotting decision boundary
+    plot_decision_boundary(nn, X_test, y_test)
+
+    # Confusion matrix
+    print("Confusion Matrix \n")
+    print(confusion_matrix(y_pred, y_test))
+    print(classification_report(y_pred, y_test))
+
+    # Cross Validation score for the linear dataset
+    X = np.genfromtxt('DATA/data_nonlinearX.csv', delimiter=',')
+    y = np.genfromtxt('DATA/data_nonlineary.csv', delimiter=',').astype(np.int64)
+    test_error = k_fold(X, y, 5, nn)
+    print("Average test error is :", test_error)
+
+    # Script for checking the test and train error
+    X = np.genfromtxt('DATA/data_nonlinearX.csv', delimiter=',')
+    y = np.genfromtxt('DATA/data_nonlineary.csv', delimiter=',').astype(np.int64)
+    input_dim = int(X.shape[1])
+    output_dim = int(y.max() + 1)
+
+    nodes = 30
+
+    nn = NN(input_dim, nodes, output_dim, alpha=0.05, num_epochs=500)
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    err = nn.fit_test_train(X_train, y_train, X_test, y_test)
+
+    train_err = err[0]
+    test_err = err[1]
+
+    plt.plot(train_err)
+    plt.plot(test_err)
+    plt.legend(('Train', 'Test'))
+    plt.show()
+non_linear()
+
+```
+![NL1](https://user-images.githubusercontent.com/43014978/54052088-776a9000-41b1-11e9-925d-aa43c0b4d449.png)
+
+Error in test set is  2.0 %
+
+![NL2](https://user-images.githubusercontent.com/43014978/54052094-7c2f4400-41b1-11e9-82c3-8e6c86af78ab.png)
+
+![NL3](https://user-images.githubusercontent.com/43014978/54052101-818c8e80-41b1-11e9-93e0-9ba74e43accf.png)
+
+Confusion Matrix 
+
+[[200   4]
+ [  4 192]]
+              precision    recall  f1-score   support
+
+           0       0.98      0.98      0.98       204
+           1       0.98      0.98      0.98       196
+
+   micro avg       0.98      0.98      0.98       400
+   macro avg       0.98      0.98      0.98       400
+weighted avg       0.98      0.98      0.98       400
+
+Average test error is : 0.012499999999999999
 
 ## Learning Rate
 
