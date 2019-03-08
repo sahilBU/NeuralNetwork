@@ -520,6 +520,52 @@ Any type of constrained optimization is regularization procedure. We could add a
 
 We are adding a term *lambdaweight* to the weight on every term. This is used because for L2 regularization, we add lambda/2* ( weight ) ^ 2 to the performace function. Derivative of this function is lambda * weight.
 
+```python
+class regularizationL2(NN):
+
+    def __init__(self, input_dimension, nodes, output_dimension, alpha=0.5, num_epochs=1000, reg_para=0.001):
+        self.reg = reg_para
+        super().__init__(input_dimension, nodes, output_dimension, alpha, num_epochs)
+
+    def hyperparameter(self, alpha, num_epochs, reg_para):
+        self.alpha = alpha
+        self.num_epochs = num_epochs
+        self.reg = reg_para
+
+    def update_weight(self, grads):
+        # Adding derivative of regularization term
+        self.input_bias -= self.reg * self.input_bias
+        self.output_bias -= self.reg * self.output_bias
+        self.input_weight -= self.reg * self.input_weight
+        self.hidden_weight -= self.reg * self.hidden_weight
+
+        self.input_bias -= self.alpha * grads["b1"]
+        self.output_bias -= self.alpha * grads["b2"]
+        self.input_weight -= self.alpha * grads["w1"]
+        self.hidden_weight -= self.alpha * grads["w2"]
+        
+def l2Regularization():
+    X = np.genfromtxt('DATA/data_nonlinearX.csv', delimiter=',')
+    y = np.genfromtxt('DATA/data_nonlineary.csv', delimiter=',').astype(np.int64)
+    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.bwr)
+    plt.show()
+    X, X_test, y, y_test = train_test_split(X, y, test_size=0.2)
+    input_dim = int(X.shape[1])
+    output_dim = int(y.max() + 1)
+    nodes = 30
+    nn = regularizationL2(input_dim, nodes, output_dim, alpha=0.1, num_epochs=2500)
+    X_train, X_test, y_train, y_test = train_test_split(X, y)
+    err = nn.fit_test_train(X_train, y_train, X_test, y_test)
+
+    train_err = err[0]
+    test_err = err[1]
+
+    
+l2Regularization()
+
+```
+![L2](https://user-images.githubusercontent.com/43014978/54052720-25c30500-41b3-11e9-8388-51fd78d189db.png)
+
 
 
 ## Digit Recognition
