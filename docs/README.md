@@ -608,10 +608,9 @@ def digitTraining():
 digitTraining()
 
 ```
-(899, 64)
-(899,)
-0.067853170189099
 
+
+Confusion Matrix -
  [84  1  0  0  0  0  0  0  0  0]
  
  [ 0 77  0  1  2  0  1  0  5  0]
@@ -642,14 +641,16 @@ We will understand hyperparameters in our network by analyzing the test error an
 2. Learning Rate and 
 3. No. of Epochs
 
-## Results
 
-List your experimental results. Provide examples of input images and output images. If relevant, you may provide images showing any intermediate steps. If your work involves videos, do not submit the videos but only links to them.
 
 ## Discussion
 
+This assignment challenges our understanding of nueral networks. We implemented forward and backpropagation. Using the forward and backward propagation we implemented the Digit Recognization technique. Also, we used different learning rates to test our model.
 
 
 The accuracy of this model is 94% and this accuracy rate common among neural networks with one hidden layer. 
 
 ## Credits and Bibliography
+
+http://neuralnetworksanddeeplearning.com/chap1.html
+https://mattmazur.com/2015/03/17/a-step-by-step-backpropagation-example/
