@@ -572,6 +572,56 @@ l2Regularization()
 
 We have taken a neural network with more than 10 nodes in the layer. If we tke less than 10, the network will have to share computations, which may lead to poor performance.
 
+```python
+
+def digitTraining():
+    X = np.genfromtxt('DATA/Digit_X_train.csv', delimiter=',')
+    y = np.genfromtxt('DATA/Digit_y_train.csv', delimiter=',').astype(np.int64)
+    input_dim = int(X.shape[1])
+    output_dim = int(y.max() + 1)
+    nodes = 30
+
+    nn = NN(input_dim, nodes, output_dim, alpha=0.05, num_epochs=2500)
+    train_err = nn.fit(X, y)
+    train_err.pop(0)
+
+    X_test = np.genfromtxt('DATA/Digit_X_test.csv', delimiter=',')
+    y_test = np.genfromtxt('DATA/Digit_y_test.csv', delimiter=',').astype(np.int64)
+
+    y_pred = nn.predict(X_test)
+    
+    print(X_test.shape)
+    print(y_test.shape)
+
+    err = error_rate(y_pred, y_test)
+    print(err)
+
+    
+
+    nn = regularizationL2(input_dim, nodes, output_dim, alpha=0.1, num_epochs=2500)
+    err = nn.fit_test_train(X, y, X_test, y_test)
+
+    train_err = err[0]
+    test_err = err[1]
+    
+    print(confusion_matrix(y_pred,y_test))
+digitTraining()
+
+```
+(899, 64)
+(899,)
+0.067853170189099
+[[84  1  0  0  0  0  0  0  0  0]
+ [ 0 77  0  1  2  0  1  0  5  0]
+ [ 0  0 83  2  0  0  0  0  1  0]
+ [ 0  0  3 82  0  0  0  1  1  1]
+ [ 1  1  0  0 87  0  0  1  0  0]
+ [ 1  0  0  4  0 88  0  0  4  2]
+ [ 2  1  0  0  1  1 89  0  0  0]
+ [ 0  0  0  0  0  0  0 83  0  0]
+ [ 0  0  0  2  0  0  1  0 77  1]
+ [ 0 11  0  0  2  2  0  4  0 88]]
+
 
 
 ## Experiments and Exploration
