@@ -255,7 +255,7 @@ class NN(object):
 
 
 
-## Non-Linear Data
+## NonLinear Data
 
 
 
