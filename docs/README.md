@@ -417,6 +417,87 @@ Average test error is : 0.012499999999999999
 
 ## Learning Rate
 
+What effect does the learning rate have on how your neural network is trained? Illustrate your answer by training your model using different learning rates. Use a script to generate output statistics and visualize them. (5pts)
+
+Learning rate controls the weights of our network with respect the loss gradient. The speed at which we travel the slope is determined by the learning rate. If we choose the lower value of learning rate, we travel the slope slowly.
+
+Relationship between learning rate and weights of our network - new_weight = existing_weight — learning_rate * gradient
+
+We need to choose the optimum learning rate for our system to perform best.
+
+For learning rate .001, we get error - 0.899888765294772 For learning rate .05, we get error - 0.0967741935483871 For learning rate .01, we get error - 0.39154616240266965 For learning rate .5, we get error - 0.07119021134593993 For learning rate 1, we get error - 0.12791991101223582 For learning rate 5, we get error - 0.8987764182424917 For learning rate 10, we get error - 0.899888765294772 For learning rate 15, we get error - 0.8987764182424917
+
+We start with lower value our error rate is high, as we increase our learning rate to 1 our error rate gets to minimum. As we keep increasing the value of our rate, the error rate increases. So we have to find the optimum error rate.
+
+
+   ```python
+lrs=[.001,.05,.01,.5,1,5,10,15]
+errors=[]
+for i in lrs:
+    print('Learning Rate: -'+str(i))
+    X = np.genfromtxt('DATA/Digit_X_train.csv', delimiter=',')
+    y = np.genfromtxt('DATA/Digit_y_train.csv', delimiter=',').astype(np.int64)
+    m = X.shape[0] 
+    input_dim = int(X.shape[1])
+    output_dim = int(y.max() + 1)
+    nodes = 20
+    nn=NN(input_dim,  nodes , output_dim,alpha=i)
+    train_err = nn.fit(X,y)
+    X_test = np.genfromtxt('DATA/Digit_X_test.csv', delimiter=',')
+    y_test = np.genfromtxt('DATA/Digit_y_test.csv', delimiter=',').astype(np.int64)
+
+    y_pred = nn.predict(X_test)
+
+    error_rate1 = nn.compute_cost(y_pred,y_test)
+    errors.append(error_rate1)
+    print("Error Rate:- "+str(error_rate1))
+    plt.plot(train_err)
+    plt.title('Train Error')
+    plt.xlabel('No. of epochs')
+    plt.ylabel("Error")
+    plt.show()
+ 
+ ```
+    
+    ![LR1](https://user-images.githubusercontent.com/43014978/54052316-18f1e180-41b2-11e9-838f-1a2a934ca502.png)
+
+Learning Rate: -0.05
+Error Rate:- 0.135706340378198
+
+![LR2](https://user-images.githubusercontent.com/43014978/54052322-1becd200-41b2-11e9-9c75-965d4951c1f4.png)
+
+Learning Rate: -0.01
+Error Rate:- 0.489432703003337
+
+
+![LR3](https://user-images.githubusercontent.com/43014978/54052328-1e4f2c00-41b2-11e9-99ef-8ad11e446ae7.png)
+
+Learning Rate: -0.5
+Error Rate:- 0.0778642936596218
+
+
+![LR4](https://user-images.githubusercontent.com/43014978/54052330-2018ef80-41b2-11e9-8add-7bee9f7f5444.png)
+
+Learning Rate: -1
+Error Rate:- 0.08120133481646273
+
+![LR6](https://user-images.githubusercontent.com/43014978/54052341-260ed080-41b2-11e9-8326-5c06f80b8810.png)
+
+Learning Rate: -10
+Error Rate:- 0.8987764182424917
+
+![LR7](https://user-images.githubusercontent.com/43014978/54052348-28712a80-41b2-11e9-915f-ea44aed3e802.png)
+
+
+Learning Rate: -15
+Error Rate:- 0.8987764182424917
+    
+
+
+
+
+![LR](https://user-images.githubusercontent.com/43014978/54052470-7f76ff80-41b2-11e9-842f-71930981fc15.png)
+
 
 
 ## Regularlization 
